@@ -1,11 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
        xsi:schemaLocation="
-        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd">
+    <context:property-placeholder location="classpath:application.properties" />
 
-    <bean id="BeanFromXml" class="ru.vtvhw.model.BeanFromXml">
-        <property name="message" value="Hello, World! From XML Bean." />
+    <bean id="mobileApp"
+          class="ru.vtvhw.scopes.MobileApp"
+          scope="prototype"
+          init-method="doSomeInit"
+          factory-method="createMobileApp" >
+        <constructor-arg value="${mobileApp.defaultName}" />
+    </bean>
+
+    <bean id="apiKey" class="ru.vtvhw.scopes.ApiKey">
+        <constructor-arg value="${apiKey.value}"/>
+    </bean>
+
+    <bean id="googlePlay"
+          class="ru.vtvhw.scopes.GooglePlayMarket"
+          destroy-method="doDestroy"
+          lazy-init="true">
+        <constructor-arg ref="apiKey"/>
+    </bean>
+
+    <bean id="ruStore"
+          class="ru.vtvhw.scopes.RuStoreMarket"
+          destroy-method="doDestroy"
+          lazy-init="true">
+        <constructor-arg ref="apiKey"/>
     </bean>
 
 </beans>

@@ -3,12 +3,19 @@ package ru.vtvhw.scopes;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RuStoreMarket implements MobileMarket {
+public class GooglePlayMarket implements MobileMarket {
     private String name;
+    private ApiKey apiKey;
     private List<MobileApp> apps = new ArrayList<>();
 
-    public RuStoreMarket(String name) {
-        this.name = name;
+    public GooglePlayMarket(ApiKey apiKey) {
+        this.name = "Google Play";
+        this.apiKey = apiKey;
+    }
+
+    @Override
+    public String getName() {
+        return name;
     }
 
     @Override
@@ -18,7 +25,12 @@ public class RuStoreMarket implements MobileMarket {
 
     @Override
     public void printPublishedApps() {
-        System.out.printf("Market '%s': %n");
+        System.out.printf("%s: %n", this);
         apps.forEach(System.out::println);
+    }
+
+    @Override
+    public String toString() {
+        return String.format("Market '%s' (%s) [%s]", name, apiKey, super.toString());
     }
 }
